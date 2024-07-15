@@ -1,0 +1,19 @@
+procedure selectionSort(arr: array of integers)
+  n = length of arr
+
+  for i = 1 to n-1
+    // Find the minimum element in the unsorted portion of the array
+    minIndex = i
+    for j = i+1 to n
+      if arr[j] < arr[minIndex]
+        minIndex = j
+
+    // Swap the minimum element with the first element of the unsorted portion
+    temp = arr[i]
+    arr[i] = arr[minIndex]
+    arr[minIndex] = temp
+
+  end for
+
+  return arr
+end procedure

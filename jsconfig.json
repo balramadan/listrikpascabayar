@@ -1,0 +1,10 @@
+{
+  "include": ["./src/**/*"], // Add the missing files to the include pattern
+  // ...
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

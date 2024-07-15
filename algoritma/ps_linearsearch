@@ -1,0 +1,21 @@
+FUNCTION linearSearch(arr, target)
+  // Initialize variables
+  found = FALSE
+  index = -1
+
+  // Iterate through the array
+  FOR i = 0 TO arr.length - 1
+    IF arr[i] == target THEN
+      found = TRUE
+      index = i
+      BREAK
+    END IF
+  END FOR
+
+  // Return the result
+  IF found THEN
+    RETURN index
+  ELSE
+    RETURN -1 // or some other value to indicate not found
+  END IF
+END FUNCTION
