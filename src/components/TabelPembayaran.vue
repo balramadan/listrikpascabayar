@@ -20,35 +20,15 @@
       </thead>
 
       <tbody class="divide-y divide-gray-200">
-        <tr>
+        <tr v-for="riwayat in dataPembayaran">
           <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            John Doe
+            {{ riwayat.tagihan.bulan }}/{{ riwayat.tagihan.tahun }}
           </td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ riwayat.tanggal_pembayaran }}</td>
           <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-            Web Developer
+            Rp. {{ riwayat.total_bayar + riwayat.biaya_admin }}
           </td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">$120,000</td>
-        </tr>
-
-        <tr>
-          <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            Jane Doe
-          </td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">04/11/1980</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-            Web Designer
-          </td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">$100,000</td>
-        </tr>
-
-        <tr>
-          <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            Gary Barlow
-          </td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">24/05/1995</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">Singer</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">$20,000</td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ riwayat.tagihan.status }}</td>
         </tr>
       </tbody>
     </table>
@@ -56,13 +36,32 @@
 </template>
 
 <script>
+import supabase from '@/database/supabase';
+
 export default {
   name: "Test",
-  created() {
+  async created() {
+    this.dataUser = JSON.parse(localStorage.getItem("data"));
 
+    let { data: pembayaran, error } = await supabase
+      .from("pembayaran")
+      .select("*, tagihan(*)")
+      .eq("id_pelanggan", this.dataUser.id_pelanggan);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    this.dataPembayaran = pembayaran.filter(
+      (p) => p.tagihan.status === "Dibayar"
+    );
   },
   data() {
-    return {};
+    return {
+      dataUser: [],
+      dataPembayaran: [],
+    };
   },
   props: {},
   methods: {},

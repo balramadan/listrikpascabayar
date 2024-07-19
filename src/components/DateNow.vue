@@ -1,5 +1,6 @@
 <template>
-  <div class="">
+  <div class="flex flex-row justify-between items-center text-sm font-poppins">
+    <h2 class="">Selamat datang, <span class="font-semibold">{{ dataPelanggan.nama_pelanggan }}</span></h2>
     <p>{{ currentDate }}</p>
   </div>
 </template>
@@ -12,10 +13,12 @@ export default {
     return {
       currentDate: "",
       currentTime: "",
+      dataPelanggan: {},
     };
   },
   created() {
     this.getCurrentDateTime();
+    this.dataPelanggan = JSON.parse(localStorage.getItem("data"));
   },
   methods: {
     getCurrentDateTime() {

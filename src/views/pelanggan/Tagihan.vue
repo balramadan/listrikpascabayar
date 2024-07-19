@@ -1,84 +1,48 @@
 <template>
   <Sidebar />
   <div class="ml-56 px-5 py-5 font-poppins">
-    <div class="overflow-x-auto rounded-lg border border-gray-200">
+    <h2 class="text-sm font-semibold">Data Tagihan</h2>
+    <div class="overflow-x-auto mt-5 rounded-lg border border-gray-200">
       <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
         <thead class="ltr:text-left rtl:text-right">
           <tr>
             <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              Bulan/Tahun
+              Bulan
             </th>
             <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              Daya
+              Tahun
             </th>
             <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               Total Meter
             </th>
             <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              Total Bayar
+              Status
             </th>
             <th class="px-4 py-2"></th>
           </tr>
         </thead>
 
         <tbody class="divide-y divide-gray-200">
-          <tr>
+          <tr v-for="tagihan in dataTagihan" class="text-center">
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              John Doe
+              {{ tagihan.bulan }}
             </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-              24/05/1995
+              {{ tagihan.tahun }}
             </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-              Web Developer
+              {{ tagihan.jumlah_meter }}
             </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">$120,000</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+              {{ tagihan.status }}
+            </td>
             <td class="whitespace-nowrap px-4 py-2">
               <a
-                href="#"
+                v-if="tagihan.status === 'Belum Dibayar'"
+                :href="`/bayar/${tagihan.id_tagihan}`"
                 class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
               >
-                View
-              </a>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              Jane Doe
-            </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-              04/11/1980
-            </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-              Web Designer
-            </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">$100,000</td>
-            <td class="whitespace-nowrap px-4 py-2">
-              <a
-                href="#"
-                class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
-              >
-                View
-              </a>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              Gary Barlow
-            </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-              24/05/1995
-            </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">Singer</td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">$20,000</td>
-            <td class="whitespace-nowrap px-4 py-2">
-              <a
-                href="#"
-                class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
-              >
-                View
+                Bayar
               </a>
             </td>
           </tr>
@@ -100,13 +64,15 @@ export default {
     let { data: tagihan, error } = await supabase
       .from("tagihan")
       .select("*")
-      .range(0, 9)
       .eq("id_pelanggan", this.dataUser.id_pelanggan);
 
     if (error) {
       console.log(error);
+      return;
     } else {
-      this.dataTagihan = tagihan;
+      this.dataTagihan = tagihan.filter(
+        (t) => t.status === "Diproses" || t.status === "Belum Dibayar"
+      );
     }
   },
   data() {

@@ -3,13 +3,23 @@
     class="fixed left-0 flex w-56 h-screen flex-col justify-between border-e bg-white"
   >
     <div class="px-4 py-6">
-      <div class="flex flex-row justify-between items-center">
-        <span
-          class="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600"
+      <div class="flex flex-row items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="50px"
+          height="50px"
+          viewBox="0 0 48 48"
         >
-          Logo
+          <path
+            fill="#3b82f6"
+            d="M33.7 5L22 17l15 5l-15.7 14.7l5.1 2.8L12 43l2.7-14.8l2.9 5.1L27 24l-15-5L25 5z"
+          />
+        </svg>
+        <span
+          class="-ml-2 font-bold text-blue-500 text-lg"
+        >
+          ectro
         </span>
-        <a class="text-xl" href="">X</a>
       </div>
 
       <ul class="mt-6 space-y-1">
@@ -33,7 +43,7 @@
 
         <li>
           <a
-            href="#"
+            href="/tagihan"
             class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
           >
             Tagihan
@@ -42,7 +52,7 @@
 
         <li>
           <a
-            href="/bayar"
+            href="/riwayat"
             class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
           >
             Riwayat Bayar
@@ -50,61 +60,13 @@
         </li>
 
         <li>
-          <details class="group [&_summary::-webkit-details-marker]:hidden">
-            <summary
-              class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-            >
-              <span class="text-sm font-medium"> Account </span>
-
-              <span
-                class="shrink-0 transition duration-300 group-open:-rotate-180"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </span>
-            </summary>
-
-            <ul class="mt-2 space-y-1 px-4">
-              <li>
-                <a
-                  href="#"
-                  class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                >
-                  Details
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#"
-                  class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                >
-                  Security
-                </a>
-              </li>
-
-              <li>
-                <form @click="handleLogout">
-                  <button
-                    type="button"
-                    class="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Logout
-                  </button>
-                </form>
-              </li>
-            </ul>
-          </details>
+          <a
+            @click.prevent="handleLogout"
+            href="#"
+            class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+          >
+            Logout
+          </a>
         </li>
       </ul>
     </div>
