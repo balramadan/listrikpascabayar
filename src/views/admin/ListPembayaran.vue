@@ -1,16 +1,14 @@
 <template>
+  <!-- Komponen sidebar admin -->
   <SidebarAdmin />
+
   <div class="ml-56 px-5 py-5 font-poppins">
     <div class="flex flex-row justify-between">
       <h2 class="font-bold">Data Pembayaran</h2>
-      <!-- <a
-        class="py-2 px-3 rounded text-xs cursor-pointer font-bold text-white bg-blue-500"
-        @click.prevent="visible = true"
-        >Tambah Penggunaan</a
-      > -->
     </div>
 
     <div class="flex flex-row mb-4">
+      <!-- Input untuk filter nama pelanggan -->
       <input
         type="text"
         v-model="filterNamaPelanggan"
@@ -45,7 +43,7 @@
         </thead>
 
         <tbody class="divide-y text-center divide-gray-200">
-          <tr v-for="(pembayaran, index) in filteredPembayaran">
+            <tr v-for="pembayaran in filteredPembayaran" :key="pembayaran.id_pembayaran">
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               {{ pembayaran.pelanggan.nama_pelanggan }}
             </td>
@@ -80,8 +78,12 @@ import SidebarAdmin from "@/components/SidebarAdmin.vue";
 import supabase from "@/database/supabase";
 
 export default {
-  name: "Test",
+  name: "ListPembayaran",
+  /**
+   * Komponen untuk menampilkan daftar pembayaran.
+   */
   async created() {
+    // Mengambil data pembayaran dari database menggunakan Supabase
     let { data: pembayaran, error } = await supabase
       .from("pembayaran")
       .select("*, pelanggan(*), tagihan(*)");
@@ -95,12 +97,22 @@ export default {
   },
   data() {
     return {
+      /**
+       * Data pembayaran yang akan ditampilkan.
+       */
       dataPembayaran: [],
+      /**
+       * Filter untuk nama pelanggan.
+       */
       filterNamaPelanggan: "",
     };
   },
   methods: {},
   computed: {
+    /**
+     * @vuese
+     * Mengembalikan daftar pembayaran yang telah difilter berdasarkan nama pelanggan.
+     */
     filteredPembayaran() {
       if (this.filterNamaPelanggan) {
         return this.dataPembayaran.filter((pembayaran) => {

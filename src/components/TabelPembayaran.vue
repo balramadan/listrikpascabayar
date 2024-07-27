@@ -20,7 +20,7 @@
       </thead>
 
       <tbody class="divide-y divide-gray-200">
-        <tr v-for="riwayat in dataPembayaran">
+        <tr v-for="riwayat in dataPembayaran" :key="riwayat.id">
           <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
             {{ riwayat.tagihan.bulan }}/{{ riwayat.tagihan.tahun }}
           </td>
@@ -39,7 +39,13 @@
 import supabase from '@/database/supabase';
 
 export default {
-  name: "Test",
+  name: "Tabel Pembayaran",
+  /**
+   * Metode yang dijalankan saat komponen ini dibuat.
+   * Mengambil data pengguna dari local storage dan melakukan query ke database untuk mendapatkan data pembayaran yang telah dibayar oleh pengguna.
+   * Data pembayaran yang telah dibayar akan disimpan dalam variabel dataPembayaran.
+   * @vuese
+   */
   async created() {
     this.dataUser = JSON.parse(localStorage.getItem("data"));
 
@@ -53,13 +59,21 @@ export default {
       return;
     }
 
+    // @vuese
+    // Memfilter pembayaran yang tagihannya dalam status dibayar
     this.dataPembayaran = pembayaran.filter(
       (p) => p.tagihan.status === "Dibayar"
     );
   },
   data() {
     return {
+      /**
+       * Data pengguna yang diambil dari local storage.
+       */
       dataUser: [],
+      /**
+       * Data pembayaran yang telah dibayar oleh pengguna.
+       */
       dataPembayaran: [],
     };
   },

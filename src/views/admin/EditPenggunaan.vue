@@ -1,10 +1,10 @@
 <template>
   <SidebarAdmin />
   <div class="ml-56 px-5 py-5 font-poppins">
+    <!-- Form untuk mengedit penggunaan. * * @event submit - Event yang terjadi 
+    saat form di-submit. * @method handleEdit - Method yang akan dipanggil saat
+    form di-submit. -->
     <form class="mt-3" @submit.prevent="handleEdit">
-      <!-- <div v-if="errorMsg" class="mt-3 bg-red-500 text-white px-3 py-1">
-        {{ errorMsg }}
-      </div> -->
       <div class="flex gap-4 mb-4 flex-col">
         <label for="namaPelanggan" class="font-semibold">Pelanggan</label>
         <input
@@ -22,7 +22,7 @@
             class="px-3 py-1.5 border-2 rounded"
             v-model="bulan"
           >
-            <option v-for="opsi in pilihanBulan" :value="opsi">
+            <option v-for="opsi in pilihanBulan" :value="opsi" :key="opsi">
               {{ opsi }}
             </option>
           </select>
@@ -61,13 +61,9 @@
         </div>
       </div>
       <div class="flex justify-end gap-5">
-        <Button
-          type="button"
-          label="Cancel"
-          severity="secondary"
-          @click="visible = false"
-          :style="{ color: 'red' }"
-        ></Button>
+        <a href="/admin/penggunaan" class="text-red-500 cursor-pointer"
+            >Cancel</a
+          >
         <input
           class="bg-blue-500 text-white py-1 px-3 rounded font-bold cursor-pointer"
           type="submit"
@@ -84,7 +80,12 @@ import SidebarAdmin from "@/components/SidebarAdmin.vue";
 import Button from "primevue/button";
 
 export default {
-  name: "Test",
+  name: "EditPenggunaan",
+  /**
+   * Lifecycle hook yang dipanggil saat komponen dibuat.
+   * Mengambil data penggunaan dari database berdasarkan id_penggunaan.
+   * Mengisi nilai awal form dengan data penggunaan yang ditemukan.
+   */
   async created() {
     let { data: penggunaan, error } = await supabase
       .from("penggunaan")
@@ -128,6 +129,11 @@ export default {
     };
   },
   methods: {
+    /**
+     * @vuese
+     * Method yang dipanggil saat form di-submit.
+     * Mengupdate data penggunaan di database berdasarkan id_penggunaan.
+     */
     async handleEdit() {
       const { data, error } = await supabase
         .from("penggunaan")

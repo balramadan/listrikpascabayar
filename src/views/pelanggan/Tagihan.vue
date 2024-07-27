@@ -1,6 +1,6 @@
 <template>
   <Sidebar />
-  <div class="ml-56 px-5 py-5 font-poppins">
+  <div class="sm:ml-56 px-5 py-5 font-poppins">
     <h2 class="text-sm font-semibold">Data Tagihan</h2>
     <div class="overflow-x-auto mt-5 rounded-lg border border-gray-200">
       <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -23,7 +23,7 @@
         </thead>
 
         <tbody class="divide-y divide-gray-200">
-          <tr v-for="tagihan in dataTagihan" class="text-center">
+            <tr v-for="tagihan in dataTagihan" :key="tagihan.id_tagihan" class="text-center">
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               {{ tagihan.bulan }}
             </td>
@@ -57,22 +57,31 @@ import supabase from "@/database/supabase";
 import Sidebar from "@/components/Sidebar.vue";
 
 export default {
-  name: "Test",
+  name: "Tagihan",
+
+  // @vuese
+  // Mengambil data
   async created() {
     this.dataUser = JSON.parse(localStorage.getItem("data"));
 
-    let { data: tagihan, error } = await supabase
-      .from("tagihan")
-      .select("*")
-      .eq("id_pelanggan", this.dataUser.id_pelanggan);
+    if (this.dataUser) {
+      try {
+        let { data: tagihan, error } = await supabase
+          .from("tagihan")
+          .select("*, pelanggan(*)")
+          .eq("id_pelanggan", this.dataUser.id_pelanggan);
 
-    if (error) {
-      console.log(error);
-      return;
-    } else {
-      this.dataTagihan = tagihan.filter(
-        (t) => t.status === "Diproses" || t.status === "Belum Dibayar"
-      );
+        if (error) {
+          console.log(error);
+          return;
+        } else {
+          this.dataTagihan = tagihan.filter(
+            (t) => t.status === "Diproses" || t.status === "Belum Dibayar"
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
   data() {

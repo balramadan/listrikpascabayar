@@ -103,7 +103,7 @@
 import supabase from "@/database/supabase";
 
 export default {
-  name: "Test",
+  name: "Pembayaran Sebulan",
   async created() {
     this.bulanIni = new Date().toLocaleString("id-ID", { month: "long" });
     let { data: tagihan, error } = await supabase

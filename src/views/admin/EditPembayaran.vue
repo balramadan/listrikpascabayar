@@ -1,4 +1,5 @@
 <template>
+  <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
   <div class="ml-56 px-5 py-5 font-poppins">
     <form @submit.prevent="handleEdit">
@@ -99,7 +100,7 @@
           class="px-3 py-1.5 border-2 rounded"
           v-model="status"
         >
-          <option v-for="opsi in pilihanStatus" :value="opsi">
+          <option v-for="opsi in pilihanStatus" :value="opsi" :key="opsi">
             {{ opsi }}
           </option>
         </select>
@@ -127,28 +128,34 @@ import SidebarAdmin from "@/components/SidebarAdmin.vue";
 import Dialog from "primevue/dialog";
 
 export default {
-  name: "Test",
+  name: "EditPembayaran",
   async created() {
-    let { data: pembayaran, error } = await supabase
-      .from("pembayaran")
-      .select("*, pelanggan(*), tagihan(*)")
-      .eq("id_pembayaran", this.$route.params.id);
+    try {
+      // Mengambil data pembayaran dari database berdasarkan id_pembayaran
+      let { data: pembayaran, error } = await supabase
+        .from("pembayaran")
+        .select("*, pelanggan(*), tagihan(*)")
+        .eq("id_pembayaran", this.$route.params.id);
 
-    if (error) {
-      console.error(error);
-      return;
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      // Mengisi data pembayaran ke dalam variabel
+      this.dataPembayaran = pembayaran[0];
+      this.nama = pembayaran[0].pelanggan.nama_pelanggan;
+      this.nomorKwh = pembayaran[0].pelanggan.nomor_kwh;
+      this.bulan = pembayaran[0].tagihan.bulan;
+      this.tahun = pembayaran[0].tagihan.tahun;
+      this.biayaAdmin = pembayaran[0].biaya_admin;
+      this.harga = pembayaran[0].total_bayar;
+      this.totalHarga = pembayaran[0].total_bayar + pembayaran[0].biaya_admin;
+      this.status = pembayaran[0].tagihan.status;
+      this.bukti = pembayaran[0].bukti;
+    } catch (error) {
+      location.href = "/";
     }
-
-    this.dataPembayaran = pembayaran[0];
-    this.nama = pembayaran[0].pelanggan.nama_pelanggan;
-    this.nomorKwh = pembayaran[0].pelanggan.nomor_kwh;
-    this.bulan = pembayaran[0].tagihan.bulan;
-    this.tahun = pembayaran[0].tagihan.tahun;
-    this.biayaAdmin = pembayaran[0].biaya_admin;
-    this.harga = pembayaran[0].total_bayar;
-    this.totalHarga = pembayaran[0].total_bayar + pembayaran[0].biaya_admin;
-    this.status = pembayaran[0].tagihan.status;
-    this.bukti = pembayaran[0].bukti;
   },
   data() {
     return {
@@ -166,6 +173,8 @@ export default {
     };
   },
   methods: {
+    // @vuese
+    // Mengupdate status tagihan berdasarkan id_tagihan
     async handleEdit() {
       const { data, error } = await supabase
         .from("tagihan")

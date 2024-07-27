@@ -21,6 +21,8 @@ export default {
     this.dataPelanggan = JSON.parse(localStorage.getItem("data"));
   },
   methods: {
+    // @vuese
+    // Mengambil tanggal dan waktu saat ini.
     getCurrentDateTime() {
       const now = new Date();
       this.currentDate = now.toLocaleDateString();;

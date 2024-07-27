@@ -1,7 +1,9 @@
 <template>
   <div
-    class="fixed left-0 flex w-56 h-screen flex-col justify-between border-e bg-white"
+    id="sidebar"
+    class="hidden sm:flex fixed left-0 w-56 h-screen flex-col justify-between border-e bg-white transition-all duration-300 z-50"
   >
+    <!-- Header -->
     <div class="px-4 py-6">
       <div class="flex flex-row items-center">
         <svg
@@ -15,13 +17,10 @@
             d="M33.7 5L22 17l15 5l-15.7 14.7l5.1 2.8L12 43l2.7-14.8l2.9 5.1L27 24l-15-5L25 5z"
           />
         </svg>
-        <span
-          class="-ml-2 font-bold text-blue-500 text-lg"
-        >
-          ectro
-        </span>
+        <span class="-ml-2 font-bold text-blue-500 text-lg"> ectro </span>
       </div>
 
+      <!-- Navigation -->
       <ul class="mt-6 space-y-1">
         <li>
           <a
@@ -31,15 +30,6 @@
             Dashboard
           </a>
         </li>
-
-        <!-- <li>
-          <a
-            href="/penggunaan"
-            class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-          >
-            Tambah Penggunaan
-          </a>
-        </li> -->
 
         <li>
           <a
@@ -71,6 +61,7 @@
       </ul>
     </div>
 
+    <!-- User Profile -->
     <div class="sticky inset-x-0 bottom-0 border-t border-gray-100">
       <a href="#" class="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
         <img
@@ -91,9 +82,13 @@
       </a>
     </div>
   </div>
+
+  <Navbar :openSidebar="openSidebar" @update:openSidebar="handleUpdate" />
 </template>
 
 <script>
+import Navbar from "./Navbar.vue";
+
 export default {
   name: "Sidebar",
   created() {
@@ -102,15 +97,33 @@ export default {
   data() {
     return {
       dataUser: {},
+      openSidebar: false,
+      classSidebar: "",
     };
   },
   methods: {
+    // @vuese
+    // Memproses logout pelanggan
     handleLogout() {
       localStorage.removeItem("data");
       this.$router.push("/login");
     },
+    handleUpdate(newValue) {
+      this.openSidebar = newValue;
+      const sidebar = document.getElementById("sidebar");
+      if (newValue) {
+        sidebar.classList.remove("hidden");
+        sidebar.classList.add("flex");
+      } else {
+        sidebar.classList.remove("flex");
+        sidebar.classList.add("hidden");
+      }
+    },
   },
   props: {},
+  components: {
+    Navbar,
+  },
 };
 </script>
 

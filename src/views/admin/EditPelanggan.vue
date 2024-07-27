@@ -1,4 +1,5 @@
 <template>
+  <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
   <div class="ml-56 px-5 py-5 font-poppins">
     <form @submit.prevent="handleEdit">
@@ -46,14 +47,14 @@
           />
         </div>
         <div class="flex gap-4 mb-4 flex-col">
-          <label for="daya" class="font-semibold">Daya listik</label>
+          <label for="daya" class="font-semibold">Daya listrik</label>
           <select
             name="daya"
             id="daya"
             class="px-3 py-2 border-2 w-full"
             v-model="pilihanDaya"
           >
-            <option v-for="(opsi, index) in pilihan" :value="index + 1">
+            <option v-for="(opsi, index) in pilihan" :value="index + 1" :key="index">
               {{ opsi }}
             </option>
           </select>
@@ -131,17 +132,20 @@ import SidebarAdmin from "@/components/SidebarAdmin.vue";
 import Dialog from "primevue/dialog";
 
 export default {
-  name: "Test",
+  name: "EditPelanggan",
   async created() {
+    // Mengambil data pelanggan dari database berdasarkan id_pelanggan
     let { data: pelanggan, error } = await supabase
       .from("pelanggan")
       .select("*")
       .eq("id_pelanggan", this.$route.params.id);
 
     if (error) {
+      // Jika terjadi error, redirect ke halaman /admin/pelanggan
       this.$route.push("/admin/pelanggan");
       return;
     }
+    // Mengisi data pelanggan ke dalam variabel dataPelanggan
     this.dataPelanggan = pelanggan[0];
     this.nama = this.dataPelanggan.nama_pelanggan;
     this.username = this.dataPelanggan.username;
@@ -166,10 +170,15 @@ export default {
     };
   },
   methods: {
+    // @vuese
+    // Membuka dialog konfirmasi hapus pelanggan
+    // @arg {String} position
     openPosition(position) {
       this.position = position;
       this.confirmDelete = true;
     },
+    // @vuese
+    // Mengupdate data pelanggan ke dalam database
     async handleEdit() {
       const { data, error } = await supabase
         .from("pelanggan")
@@ -185,8 +194,11 @@ export default {
         .select();
 
       alert("Pelanggan berhasil diubah");
+      // Redirect ke halaman /admin/pelanggan setelah berhasil mengubah data
       this.$router.push("/admin/pelanggan");
     },
+    // @vuese
+    // Menghapus data pelanggan dari database
     async handleDelete() {
       const { error } = await supabase
         .from("pelanggan")
@@ -201,6 +213,7 @@ export default {
       }
 
       alert("Pelanggan berhasil dihapus");
+      // Redirect ke halaman /admin/pelanggan setelah berhasil menghapus data
       this.$router.push("/admin/pelanggan");
     },
   },

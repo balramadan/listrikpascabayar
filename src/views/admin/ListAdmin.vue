@@ -1,5 +1,7 @@
 <template>
+  <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
+
   <div class="ml-56 px-5 py-5 font-poppins">
     <div class="flex flex-row justify-between">
       <h2 class="font-bold">Data User</h2>
@@ -30,7 +32,7 @@
         </thead>
 
         <tbody class="divide-y text-center divide-gray-200">
-          <tr v-for="admin in users">
+            <tr v-for="admin in users" :key="admin.id_user">
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               {{ admin.nama_admin }}
             </td>
@@ -111,7 +113,7 @@
           class="px-3 py-2 border-2 w-full"
           v-model="role"
         >
-          <option v-for="(opsi, index) in pilihanRole" :value="index + 1">
+            <option v-for="(opsi, index) in pilihanRole" :value="index + 1" :key="index">
             {{ opsi }}
           </option>
         </select>
@@ -142,8 +144,9 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 
 export default {
-  name: "Test",
+  name: "ListAdmin",
   async created() {
+    // Mengambil data user dari database
     let { data: user, error } = await supabase
       .from("user")
       .select("*, level(*)");
@@ -157,17 +160,19 @@ export default {
   },
   data() {
     return {
-      users: [],
-      visible: false,
-      pilihanRole: ["superadmin", "admin"],
-      nama: "",
-      username: "",
-      password: "",
-      role: null,
-      errorMsg: "",
+      users: [], // Daftar user yang akan ditampilkan
+      visible: false, // Menentukan apakah modal tambah user ditampilkan atau tidak
+      pilihanRole: ["superadmin", "admin"], // Pilihan role untuk dropdown
+      nama: "", // Nama lengkap user yang akan ditambahkan
+      username: "", // Username user yang akan ditambahkan
+      password: "", // Password user yang akan ditambahkan
+      role: null, // Role user yang akan ditambahkan
+      errorMsg: "", // Pesan error jika terjadi kesalahan saat menambahkan user
     };
   },
   methods: {
+    // @vuese
+    // Menambahkan user baru ke database
     async handleTambah() {
       const { data, error } = await supabase
         .from("user")
@@ -181,13 +186,15 @@ export default {
         ])
         .select();
 
-        if(error) {
-          this.errorMsg = error.message;
-          return;
-        }
+      if (error) {
+        this.errorMsg = error.message;
+        return;
+      }
 
-        this.visible = false;
-        location.reload();
+      // @vuese
+      // Reload web
+      this.visible = false;
+      location.reload();
     },
   },
   props: {},

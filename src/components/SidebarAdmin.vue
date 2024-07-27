@@ -1,9 +1,11 @@
 <template>
+  <!-- Komponen SidebarAdmin -->
   <div
-    class="fixed left-0 flex w-56 h-screen flex-col justify-between border-e bg-white"
+    class="fixed left-0 hidden sm:flex w-56 h-screen flex-col justify-between border-e bg-white"
   >
     <div class="px-4 py-6">
       <div class="flex flex-row items-center">
+        <!-- Logo -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="50px"
@@ -15,14 +17,11 @@
             d="M33.7 5L22 17l15 5l-15.7 14.7l5.1 2.8L12 43l2.7-14.8l2.9 5.1L27 24l-15-5L25 5z"
           />
         </svg>
-        <span
-          class="-ml-2 font-bold text-blue-500 text-lg"
-        >
-          ectro
-        </span>
+        <span class="-ml-2 font-bold text-blue-500 text-lg"> ectro </span>
       </div>
 
       <ul class="mt-6 space-y-1">
+        <!-- Menu Dashboard -->
         <li>
           <a
             href="/admin"
@@ -32,6 +31,7 @@
           </a>
         </li>
 
+        <!-- Menu Data Pelanggan -->
         <li>
           <a
             href="/admin/pelanggan"
@@ -41,6 +41,7 @@
           </a>
         </li>
 
+        <!-- Menu Data Penggunaan -->
         <li>
           <a
             href="/admin/penggunaan"
@@ -50,6 +51,7 @@
           </a>
         </li>
 
+        <!-- Menu Data Pembayaran -->
         <li>
           <a
             href="/admin/pembayaran"
@@ -59,6 +61,7 @@
           </a>
         </li>
 
+        <!-- Menu Tarif Listrik -->
         <li>
           <a
             href="/admin/tarif"
@@ -68,6 +71,7 @@
           </a>
         </li>
 
+        <!-- Menu Pengaturan Admin (hanya ditampilkan jika id_level = 1) -->
         <li v-if="dataAdmin.id_level == 1">
           <details class="group [&_summary::-webkit-details-marker]:hidden">
             <summary
@@ -94,6 +98,7 @@
             </summary>
 
             <ul class="mt-2 space-y-1 px-4">
+              <!-- Submenu Data Admin -->
               <li>
                 <a
                   href="/admin/list"
@@ -103,6 +108,7 @@
                 </a>
               </li>
 
+              <!-- Submenu Data Level -->
               <li>
                 <a
                   href="/admin/level"
@@ -115,6 +121,7 @@
           </details>
         </li>
 
+        <!-- Menu Logout -->
         <li>
           <a
             @click.prevent="handleLogout"
@@ -127,6 +134,7 @@
       </ul>
     </div>
 
+    <!-- User Profile -->
     <div class="sticky inset-x-0 bottom-0 border-t border-gray-100">
       <a href="#" class="flex items-center gap-2 bg-white p-4 hover:bg-gray-50">
         <img
@@ -151,13 +159,19 @@
 
 <script>
 export default {
-  name: "Sidebar",
+  name: "Sidebar Admin",
   created() {
-    this.dataAdmin = JSON.parse(localStorage.getItem("dataAdmin"));
-    if (this.dataAdmin.id_level == 1) {
-      this.role = "Super Admin";
-    } else if (this.dataAdmin.id_level == 2) {
-      this.role = "Admin";
+    try {
+      // Mengambil data admin dari local storage
+      this.dataAdmin = JSON.parse(localStorage.getItem("dataAdmin"));
+      // Menentukan peran berdasarkan id_level
+      if (this.dataAdmin.id_level == 1) {
+        this.role = "Super Admin";
+      } else if (this.dataAdmin.id_level == 2) {
+        this.role = "Admin";
+      }
+    } catch (error) {
+      location.href = "/admin";
     }
   },
   data() {
@@ -167,6 +181,8 @@ export default {
     };
   },
   methods: {
+    // @vuese
+    // Menghandle proses logout admin
     handleLogout() {
       localStorage.removeItem("dataAdmin");
       this.$router.push("/admin/login");

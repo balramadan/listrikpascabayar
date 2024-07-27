@@ -1,5 +1,5 @@
 {
-  "include": ["./src/**/*"], // Add the missing files to the include pattern
+  "include": ["./src/**/*", "__tests__/**/*"], // Add the missing files to the include pattern
   // ...
   "compilerOptions": {
     "paths": {

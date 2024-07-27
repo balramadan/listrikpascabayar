@@ -20,7 +20,7 @@
       </thead>
 
       <tbody class="divide-y divide-gray-200 text-center">
-        <tr v-for="tagihan in dataTagihan">
+        <tr v-for="tagihan in dataTagihan" :key="tagihan.id">
           <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
             {{ tagihan.bulan }}
           </td>
@@ -43,7 +43,7 @@
 import supabase from "@/database/supabase";
 
 export default {
-  name: "Test",
+  name: "Tabel Tagihan",
   async created() {
     this.dataUser = JSON.parse(localStorage.getItem("data"));
 
@@ -55,6 +55,8 @@ export default {
     if (error) {
       console.log(error);
     } else {
+      // @vuese
+      // Memfilter pembayaran yang tagihannya dalam status Diproses dan atau Belum Dibayar
       this.dataTagihan = tagihan.filter(
         (t) => t.status === "Diproses" || t.status === "Belum Dibayar"
       );

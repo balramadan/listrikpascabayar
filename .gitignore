@@ -29,4 +29,9 @@ coverage
 
 *.tsbuildinfo
 
+# Ignore
 .env
+__tests__/*
+dist/*
+docs/*
+website/*

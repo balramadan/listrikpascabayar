@@ -1,5 +1,7 @@
 <template>
+  <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
+
   <div class="ml-56 px-5 py-5 font-poppins">
     <div class="flex flex-row justify-between">
       <h2 class="font-bold">List Level</h2>
@@ -27,7 +29,7 @@
         </thead>
 
         <tbody class="divide-y text-center divide-gray-200">
-          <tr v-for="(level, index) in dataLevel">
+            <tr v-for="(level, index) in dataLevel" :key="index">
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               {{ index + 1 }}
             </td>
@@ -101,8 +103,9 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 
 export default {
-  name: "Test",
+  name: "ListLevel",
   async created() {
+    // Mengambil data level dari database saat komponen dibuat
     let { data: level, error } = await supabase.from("level").select("*");
 
     if (error) {
@@ -114,25 +117,27 @@ export default {
   },
   data() {
     return {
-      dataLevel: [],
-      visible: false,
-      role: "",
-      errorMsg: "",
+      dataLevel: [], // Data level yang akan ditampilkan
+      visible: false, // Menyimpan status tampilan modal
+      role: "", // Menyimpan nilai inputan role
+      errorMsg: "", // Menyimpan pesan error
     };
   },
   methods: {
+    // @vuese
+    // Menambahkan level baru ke database
     async handleTambah() {
       const { data, error } = await supabase
         .from("level")
         .insert([{ nama_level: this.role }])
         .select();
 
-        if(error){
-          this.errorMsg = error.message
-        }
+      if (error) {
+        this.errorMsg = error.message;
+      }
 
-        this.visible = false
-        location.reload()
+      this.visible = false; // Menutup modal
+      location.reload(); // Me-refresh halaman
     },
   },
   props: {},

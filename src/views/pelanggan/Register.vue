@@ -44,7 +44,7 @@
           class="px-3 py-2 border-2"
           v-model="pilihanDaya"
         >
-          <option v-for="(opsi, index) in pilihan" :value="index + 1">
+          <option v-for="(opsi, index) in pilihan" :value="index + 1" :key="index">
             {{ opsi }}
           </option>
         </select>

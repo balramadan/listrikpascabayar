@@ -1,7 +1,11 @@
 <template>
+  <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
+
+  <!-- Formulir Edit Admin -->
   <div class="ml-56 px-5 py-5 font-poppins">
     <form class="mt-3" @submit.prevent="handleEdit">
+      <!-- Input Nama Lengkap -->
       <div class="flex gap-4 mb-4 flex-col">
         <label for="nama" class="font-semibold">Nama lengkap</label>
         <input
@@ -12,6 +16,8 @@
           v-model="nama"
         />
       </div>
+
+      <!-- Input Username dan Password -->
       <div class="grid grid-cols-2 gap-4">
         <div class="flex gap-4 mb-4 flex-col">
           <label for="username" class="font-semibold w-24">Username</label>
@@ -34,6 +40,8 @@
           />
         </div>
       </div>
+
+      <!-- Pilihan Role -->
       <div class="flex gap-4 mb-4 flex-col">
         <label for="role" class="font-semibold w-24">Role</label>
         <select
@@ -42,12 +50,13 @@
           class="px-3 py-2 border-2 w-full"
           v-model="role"
         >
-          <option v-for="(opsi, index) in pilihanRole" :value="index + 1">
+            <option v-for="(opsi, index) in pilihanRole" :value="index + 1" :key="index">
             {{ opsi }}
           </option>
         </select>
       </div>
 
+      <!-- Tombol Delete, Cancel, dan Save -->
       <div class="flex justify-between items-center gap-5">
         <div class="">
           <a
@@ -68,7 +77,7 @@
     </form>
   </div>
 
-  <!-- Modal -->
+  <!-- Modal Konfirmasi Hapus -->
   <Dialog
     v-model:visible="confirmDelete"
     header="Hapus Pelanggan"
@@ -109,8 +118,9 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 
 export default {
-  name: "Test",
+  name: "EditAdmin",
   async created() {
+    // Mengambil data admin yang akan diedit dari database
     let { data: user, error } = await supabase
       .from("user")
       .select("*, level(*)")
@@ -121,6 +131,7 @@ export default {
       return;
     }
 
+    // Mengisi data admin ke dalam variabel
     this.dataUser = user[0];
     this.nama = user[0].nama_admin;
     this.username = user[0].username;
@@ -140,10 +151,14 @@ export default {
     };
   },
   methods: {
+    // @vuese
+    // Membuka dialog konfirmasi hapus
+    // @arg {String} position
     openPosition(position) {
       this.position = position;
       this.confirmDelete = true;
     },
+    // Menghapus data admin dari database
     async handleDelete() {
       const { data, error } = await supabase
         .from("user")
@@ -159,6 +174,7 @@ export default {
       alert("Data berhasil dihapus");
       this.$router.push("/admin/list");
     },
+    // Mengubah data admin di database
     async handleEdit() {
       const { data, error } = await supabase
         .from("user")

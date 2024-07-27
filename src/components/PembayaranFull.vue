@@ -105,7 +105,7 @@
 import supabase from "@/database/supabase";
 
 export default {
-  name: "Test",
+  name: "Pembayaran Full",
   async created() {
     let { data: tagihan, error } = await supabase.from("tagihan").select("*");
 

@@ -1,5 +1,7 @@
 <template>
+  <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
+
   <div class="ml-56 px-5 py-5 font-poppins">
     <div class="flex flex-row justify-between">
       <h2 class="font-bold">List Tarif</h2>
@@ -27,7 +29,7 @@
         </thead>
 
         <tbody class="divide-y text-center divide-gray-200">
-          <tr v-for="tarif in dataTarif">
+            <tr v-for="tarif in dataTarif" :key="tarif.id_tarif">
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               {{ tarif.daya }}
             </td>
@@ -112,8 +114,9 @@ import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 
 export default {
-  name: "Test",
+  name: "ListTarif",
   async created() {
+    // Mengambil data tarif dari database saat komponen dibuat
     let { data: tarif, error } = await supabase.from("tarif").select("*");
 
     if (error) {
@@ -125,14 +128,18 @@ export default {
   },
   data() {
     return {
-      dataTarif: [],
-      visible: false,
-      daya: "",
-      tarifperkwh: 0,
-      errorMsg: "",
+      dataTarif: [], // Data tarif yang akan ditampilkan
+      visible: false, // Menyimpan status tampilan modal
+      daya: "", // Nilai input daya
+      tarifperkwh: 0, // Nilai input tarif per Kwh
+      errorMsg: "", // Pesan error jika terjadi kesalahan
     };
   },
   methods: {
+    /**
+     * @vuese
+     * Menambahkan data tarif ke database
+     */
     async handleTambah() {
       const { data, error } = await supabase
         .from("tarif")

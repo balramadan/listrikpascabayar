@@ -7,7 +7,11 @@
       class="px-3 py-1.5 border-2 rounded"
       @input="$emit('update:namaPelanggan', $event.target.value)"
     >
-      <option v-for="opsi in dataPelanggan" :value="opsi.id_pelanggan">
+      <option
+        v-for="opsi in dataPelanggan"
+        :value="opsi.id_pelanggan"
+        :key="opsi.id_pelanggan"
+      >
         {{ opsi.nama_pelanggan }}
       </option>
     </select>
@@ -15,10 +19,10 @@
 </template>
 
 <script>
-import supabase from '@/database/supabase';
+import supabase from "@/database/supabase";
 
 export default {
-  name: "Test",
+  name: "DataPelanggan",
   async created() {
     let { data: pelanggan, error } = await supabase
       .from("pelanggan")
@@ -29,6 +33,10 @@ export default {
       return;
     }
 
+    /**
+     * Daftar pelanggan yang diambil dari database.
+     * @type {Array}
+     */
     this.dataPelanggan = pelanggan;
   },
   data() {
@@ -37,7 +45,15 @@ export default {
     };
   },
   props: {
-    namaPelanggan: Int16Array,
+    /**
+     * Nama pelanggan yang akan digunakan di komponen lain.
+     * @type {Number}
+     * @required
+     */
+    namaPelanggan: {
+      type: Int16Array,
+      required: true,
+    },
   },
   methods: {},
 };

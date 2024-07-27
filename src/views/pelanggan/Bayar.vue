@@ -1,6 +1,8 @@
 <template>
+  <!-- Sidebar component -->
   <Sidebar />
-  <div class="ml-56 py-5 font-poppins">
+
+  <div class="sm:ml-56 py-5 font-poppins">
     <div class="mx-auto px-5">
       <header class="text-left">
         <h2 class="text-lg font-bold text-gray-900">Pembayaran</h2>
@@ -8,6 +10,7 @@
 
       <div class="mt-5">
         <div class="">
+          <!-- Grid layout for displaying information -->
           <div class="grid grid-cols-6">
             <h3 class="mr-3">Nama:</h3>
             <p class="col-span-5">
@@ -82,29 +85,37 @@
 <script>
 import supabase from "@/database/supabase";
 import Sidebar from "@/components/Sidebar.vue";
+import { useToast } from 'primevue/usetoast';
 
 export default {
-  name: "Halaman Bayar",
+  name: "HalamanBayar",
   async created() {
-    let { data: pembayaran, error } = await supabase
-      .from("pembayaran")
-      .select("*, tagihan(*), pelanggan(*)")
-      .eq("id_tagihan", this.$route.params.id);
+    try {
+      const id = this.$route.params.id;
+      // Fetch pembayaran data from the database
+      let { data: pembayaran, error } = await supabase
+        .from("pembayaran")
+        .select("*, tagihan(*), pelanggan(*)")
+        .eq("id_tagihan", id);
 
-    if (error) {
-      console.error(error);
-      return;
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      // Set the data for displaying in the template
+      this.dataPembayaran = pembayaran[0];
+      this.nama = pembayaran[0].pelanggan.nama_pelanggan;
+      this.nomorKwh = pembayaran[0].pelanggan.nomor_kwh;
+      this.bulan = pembayaran[0].tagihan.bulan;
+      this.tahun = pembayaran[0].tagihan.tahun;
+      this.jumlahMeter = pembayaran[0].tagihan.jumlah_meter;
+      this.subtotal = pembayaran[0].total_bayar;
+      this.biayaAdmin = pembayaran[0].biaya_admin;
+      this.total = pembayaran[0].total_bayar + pembayaran[0].biaya_admin;
+    } catch (error) {
+      location.href = "/";
     }
-
-    this.dataPembayaran = pembayaran[0];
-    this.nama = pembayaran[0].pelanggan.nama_pelanggan;
-    this.nomorKwh = pembayaran[0].pelanggan.nomor_kwh;
-    this.bulan = pembayaran[0].tagihan.bulan;
-    this.tahun = pembayaran[0].tagihan.tahun;
-    this.jumlahMeter = pembayaran[0].tagihan.jumlah_meter;
-    this.subtotal = pembayaran[0].total_bayar;
-    this.biayaAdmin = pembayaran[0].biaya_admin;
-    this.total = pembayaran[0].total_bayar + pembayaran[0].biaya_admin;
   },
   data() {
     return {
@@ -117,18 +128,26 @@ export default {
       subtotal: 0,
       biayaAdmin: 0,
       total: 0,
-      bukti: null,
       check: false,
+      bukti: null,
     };
   },
   props: {},
   methods: {
+    // @vuese
+    // Mengubah boolean checkout
     checkout() {
       this.checkout = !this.checkout;
     },
+    // @vuese
+    // Menangani file yang diupload
+    // @arg File
     handleFileUpload(e) {
+      // Handle file upload event
       this.bukti = e.target.files[0];
     },
+    // @vuese
+    // Mengirim bukti pembayaran
     async bayar() {
       if (!this.bukti) {
         alert("Please upload an image");
@@ -144,7 +163,7 @@ export default {
 
       if (uploadError) {
         alert("Error uploading image", uploadError);
-        console.error(uploadError)
+        console.error(uploadError);
         return;
       }
 
@@ -152,7 +171,8 @@ export default {
         .from("pembayaran")
         .update({
           bukti: filePath,
-        }).eq('id_tagihan', this.$route.params.id);
+        })
+        .eq("id_tagihan", this.$route.params.id);
 
       if (updateBukti) {
         alert("Kirim bukti gagal", updateBukti.message);
@@ -171,8 +191,16 @@ export default {
         return;
       }
 
-      alert("Pembayaran berhasil!");
+      this.showSuccess();
       this.$router.push("/tagihan");
+    },
+    showSuccess() {
+      this.$toast.add({
+        severity: "success",
+        summary: "Sukses",
+        detail: "Sukses melakukan pembayaran, silahkan tunggu konfirmasi",
+        life: 3000,
+      });
     },
   },
   components: {

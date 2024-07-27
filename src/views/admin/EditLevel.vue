@@ -1,5 +1,7 @@
 <template>
+  <!-- Komponen sidebar admin -->
   <SidebarAdmin />
+  
   <div class="ml-56 px-5 py-5 font-poppins">
     <form class="mt-3" @submit.prevent="handleEdit">
       <div class="flex gap-4 mb-4 flex-col">
@@ -74,6 +76,10 @@ import Dialog from "primevue/dialog";
 
 export default {
   name: "Test",
+  /**
+   * Metode yang dijalankan saat komponen dibuat.
+   * Mengambil data level berdasarkan id dari route params.
+   */
   async created() {
     let { data: level, error } = await supabase
       .from("level")
@@ -89,16 +95,34 @@ export default {
   },
   data() {
     return {
+      /**
+       * Role yang akan diubah.
+       */
       role: "",
+      /**
+       * Menyimpan status konfirmasi penghapusan data.
+       */
       confirmDelete: false,
+      /**
+       * Menyimpan posisi dialog konfirmasi penghapusan data.
+       */
       position: "",
     };
   },
   methods: {
+    /**
+     * @vuese
+     * Membuka dialog konfirmasi penghapusan data.
+     * @arg {string} position - Posisi dialog konfirmasi penghapusan data.
+     */
     openPosition(position) {
       this.position = position;
       this.confirmDelete = true;
     },
+    /**
+     * @vuese
+     * Menghandle proses pengeditan data level.
+     */
     async handleEdit() {
       const { data, error } = await supabase
         .from("level")
@@ -114,6 +138,10 @@ export default {
       alert("Data berhasil diubah");
       this.$router.push("/admin/level");
     },
+    /**
+     * @vuese
+     * Menghandle proses penghapusan data level.
+     */
     async handleDelete() {
       const { error } = await supabase
         .from("level")

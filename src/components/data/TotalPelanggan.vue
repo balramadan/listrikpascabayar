@@ -6,7 +6,7 @@
 import supabase from '@/database/supabase';
 
 export default {
-  name: "Test",
+  name: "Total Pelanggan",
   async created() {
     let { data: pelanggan, error } = await supabase
       .from("pelanggan")
@@ -17,6 +17,8 @@ export default {
       return
     }
 
+    // @vuese
+    // Data disimpan dalam variabel dataPelanggan.
     this.dataPelanggan = pelanggan
   },
   data() {

@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col h-screen">
+    <!-- Tautan untuk login sebagai admin -->
     <div class="flex justify-end mt-3 mr-3">
       <a href="/admin" class="px-3 py-1 shadow-sm text-sm bg-slate-100 rounded"
         >Login sebagai admin</a
@@ -9,6 +10,7 @@
       <div
         class="relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8"
       >
+        <!-- Lectro logo -->
         <span
           class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"
         ></span>
@@ -28,7 +30,7 @@
         </div>
         <h2 class="font-bold text-center mb-5">Login</h2>
 
-        <!-- Error message -->
+        <!-- Pesan error -->
         <div
           v-if="errorMsg"
           class="mb-5 bg-red-500 text-white px-3 py-2 text-center"
@@ -66,7 +68,7 @@
 import supabase from "@/database/supabase";
 
 export default {
-  name: "Test",
+  name: "LoginPelanggan",
   created() {},
   data() {
     return {
@@ -76,6 +78,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * @vuese
+     * Menghandle proses login pengguna
+     */
     async handleLogin() {
       let { data: login, error } = await supabase
         .from("pelanggan")
@@ -86,6 +92,7 @@ export default {
       if (login.length == 0) {
         this.errorMsg = "Username atau password salah!";
       } else {
+        // Set data pelanggan ke local storage
         localStorage.setItem("data", JSON.stringify(login[0]));
         location.href = "/";
       }
