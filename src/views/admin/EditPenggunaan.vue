@@ -1,6 +1,6 @@
 <template>
   <SidebarAdmin />
-  <div class="ml-56 px-5 py-5 font-poppins">
+  <div class="ml-0 sm:ml-56 px-5 py-5 font-poppins">
     <!-- Form untuk mengedit penggunaan. * * @event submit - Event yang terjadi 
     saat form di-submit. * @method handleEdit - Method yang akan dipanggil saat
     form di-submit. -->

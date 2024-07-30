@@ -5,12 +5,12 @@ import MenuPelanggan from "@/views/pelanggan/MenuPelanggan.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // User
     {
       path: "/algoritma",
       name: "algoritma",
       component: () => import("../views/AlgoritmaView.vue"),
     },
+    // User
     {
       path: "/",
       name: "menu-pelanggan",

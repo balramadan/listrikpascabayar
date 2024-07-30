@@ -2,8 +2,8 @@
   <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
 
-  <div class="ml-56 bg-white px-5 py-5 font-poppins">
-    <div class="flex flex-row justify-between">
+  <div class="ml-0 sm:ml-56 bg-white px-5 py-5 font-poppins">
+    <div class="flex flex-row justify-between items-center">
       <h2 class="font-bold">Data Pelanggan</h2>
       <a
         class="py-2 px-3 rounded text-xs cursor-pointer font-bold text-white bg-blue-500"
@@ -231,7 +231,7 @@ export default {
       if (error) {
         console.log(error.message)
       } else {
-        this.showSuccess("Berhasil menambahkan pelanggan!");
+        window.alert("Berhasil menambahkan pelanggan!");
         sessionStorage.removeItem("pelanggan");
         sessionStorage.setItem("pelanggan", JSON.stringify(tambah));
         this.visible = false;

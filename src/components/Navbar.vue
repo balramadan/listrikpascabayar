@@ -63,6 +63,8 @@ export default {
     return {};
   },
   methods: {
+    // @vuese
+    // Button untuk sidebar di mobile
     clickButton() {
       this.$emit("update:openSidebar", !this.openSidebar);
       if (this.openSidebar) {
@@ -75,7 +77,10 @@ export default {
     },
   },
   props: {
+    // @vuese
+    // Props boolean untuk membuka atau menutup sidebar
     openSidebar: {
+      // Boolean
       type: Boolean,
       default: false,
     },

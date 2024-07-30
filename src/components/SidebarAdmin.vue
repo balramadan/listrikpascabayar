@@ -1,7 +1,8 @@
 <template>
   <!-- Komponen SidebarAdmin -->
   <div
-    class="fixed left-0 hidden sm:flex w-56 h-screen flex-col justify-between border-e bg-white"
+    id="sidebarAdmin"
+    class="hidden sm:flex fixed left-0 w-56 h-screen flex-col justify-between border-e bg-white transition-all duration-300 z-50"
   >
     <div class="px-4 py-6">
       <div class="flex flex-row items-center">
@@ -155,9 +156,13 @@
       </a>
     </div>
   </div>
+
+  <Navbar :openSidebar="openSidebar" @update:openSidebar="handleUpdate" />
 </template>
 
 <script>
+import Navbar from "./Navbar.vue";
+
 export default {
   name: "Sidebar Admin",
   created() {
@@ -178,6 +183,8 @@ export default {
     return {
       dataAdmin: {},
       role: "",
+      openSidebar: false,
+      classSidebar: "",
     };
   },
   methods: {
@@ -187,8 +194,24 @@ export default {
       localStorage.removeItem("dataAdmin");
       this.$router.push("/admin/login");
     },
+    // @vuese
+    // Mengubah status sidebar
+    handleUpdate(newValue) {
+      this.openSidebar = newValue;
+      const sidebar = document.getElementById("sidebarAdmin");
+      if (newValue) {
+        sidebar.classList.remove("hidden");
+        sidebar.classList.add("flex");
+      } else {
+        sidebar.classList.remove("flex");
+        sidebar.classList.add("hidden");
+      }
+    },
   },
   props: {},
+  components: {
+    Navbar,
+  },
 };
 </script>
 

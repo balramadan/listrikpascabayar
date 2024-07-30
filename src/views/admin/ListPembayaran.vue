@@ -2,8 +2,8 @@
   <!-- Komponen sidebar admin -->
   <SidebarAdmin />
 
-  <div class="ml-56 px-5 py-5 font-poppins">
-    <div class="flex flex-row justify-between">
+  <div class="ml-0 sm:ml-56 px-5 py-5 font-poppins">
+    <div class="flex flex-row justify-between items-center">
       <h2 class="font-bold">Data Pembayaran</h2>
     </div>
 
@@ -51,13 +51,13 @@
               {{ pembayaran.bulan_bayar }}
             </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-              {{ pembayaran.tagihan.jumlah_meter }}
+              {{ pembayaran.tagihan?.jumlah_meter }}
             </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
               Rp. {{ pembayaran.total_bayar }}
             </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-              {{ pembayaran.tagihan.status }}
+              {{ pembayaran.tagihan?.status }}
             </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
               <a

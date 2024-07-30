@@ -1,7 +1,7 @@
 <template>
   <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
-  <div class="ml-56 px-5 py-5 font-poppins">
+  <div class="ml-0 sm:ml-56 px-5 py-5 font-poppins">
     <form @submit.prevent="handleEdit">
       <div class="flex gap-4 mb-4 flex-col">
         <label for="nama" class="font-semibold">Nama lengkap</label>

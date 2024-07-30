@@ -2,8 +2,8 @@
   <!-- Komponen SidebarAdmin -->
   <SidebarAdmin />
 
-  <div class="ml-56 px-5 py-5 font-poppins">
-    <div class="flex flex-row justify-between">
+  <div class="ml-0 sm:ml-56 px-5 py-5 font-poppins">
+    <div class="flex flex-row justify-between items-center">
       <h2 class="font-bold">Data Penggunaan</h2>
       <a
         class="py-2 px-3 rounded text-xs cursor-pointer font-bold text-white bg-blue-500"
@@ -12,7 +12,7 @@
       >
     </div>
 
-    <div class="flex flex-row mb-4">
+    <div class="flex flex-row my-5 sm:mb-4">
       <input
         type="text"
         v-model="filterNamaPelanggan"
@@ -47,7 +47,10 @@
         </thead>
 
         <tbody class="divide-y text-center divide-gray-200">
-            <tr v-for="penggunaan in filteredPenggunaan" :key="penggunaan.id_pengunaan">
+          <tr
+            v-for="penggunaan in filteredPenggunaan"
+            :key="penggunaan.id_pengunaan"
+          >
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
               {{ penggunaan.pelanggan.nama_pelanggan }}
             </td>
@@ -241,26 +244,26 @@ export default {
      * Menambahkan data penggunaan ke database
      */
     async handleTambah() {
-      const { data, error } = await supabase
+      const data = {
+        id_pelanggan: this.namaPelanggan,
+        bulan: this.bulan,
+        tahun: this.tahun,
+        meter_awal: this.meterAwal,
+        meter_akhir: this.meterAkhir,
+      };
+
+      const { data: response, error } = await supabase
         .from("penggunaan")
-        .insert([
-          {
-            id_pelanggan: this.namaPelanggan,
-            bulan: this.bulan,
-            tahun: this.tahun,
-            meter_awal: this.meterAwal,
-            meter_akhir: this.meterAkhir,
-          },
-        ])
+        .insert([data])
         .select();
 
       if (error) {
         this.errorMsg = error.message;
         return;
       }
-      alert("Data berhasil ditambahkan");
       this.visible = false;
-      location.reload();
+      window.alert("Data berhasil ditambahkan");
+      window.location.reload();
     },
   },
   props: {},

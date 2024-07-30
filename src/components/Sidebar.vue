@@ -108,6 +108,8 @@ export default {
       localStorage.removeItem("data");
       this.$router.push("/login");
     },
+    // @vuese
+    // Mengubah status sidebar
     handleUpdate(newValue) {
       this.openSidebar = newValue;
       const sidebar = document.getElementById("sidebar");

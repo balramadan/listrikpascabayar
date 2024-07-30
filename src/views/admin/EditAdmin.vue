@@ -3,7 +3,7 @@
   <SidebarAdmin />
 
   <!-- Formulir Edit Admin -->
-  <div class="ml-56 px-5 py-5 font-poppins">
+  <div class="ml-0 sm:ml-56 px-5 py-5 font-poppins">
     <form class="mt-3" @submit.prevent="handleEdit">
       <!-- Input Nama Lengkap -->
       <div class="flex gap-4 mb-4 flex-col">
